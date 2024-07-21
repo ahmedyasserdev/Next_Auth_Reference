@@ -7,7 +7,11 @@ import { UserRole } from "@prisma/client"
 
 
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
+export const { auth, handlers , signIn, signOut } = NextAuth({
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
   callbacks : {
     
     async session({session, token}) {
