@@ -5,6 +5,8 @@ import { LoginSchema, RegisterSchema } from '@/schemas';
 import { AuthError } from 'next-auth';
 
 import { z } from "zod"
+import { getUserByEmail } from './user.actions';
+import { generateVerificationToken, sendVerificationEmail } from './verficationToken.actions';
 
 
 export const login = async (values : z.infer<typeof LoginSchema> ) => {
@@ -13,6 +15,22 @@ export const login = async (values : z.infer<typeof LoginSchema> ) => {
     if (!validatedFields.success)  return {error : "Invalid fields"} 
 
     const {email , password}  = validatedFields.data;
+    const exisitingUser = await getUserByEmail(email);
+
+        if (!exisitingUser || !exisitingUser.email || !exisitingUser.password ) {
+            return  {error : "Email does not exist!"}
+
+        }
+
+
+            if (!exisitingUser.emailVerified) {
+                    const verificationToken = await generateVerificationToken(exisitingUser.email);
+
+                    await sendVerificationEmail({email : verificationToken?.email! , token : verificationToken?.token!})
+
+                    return {success : "Email Verification sent!"}
+            }
+
 
     try {
         await signIn('credentials' , {
