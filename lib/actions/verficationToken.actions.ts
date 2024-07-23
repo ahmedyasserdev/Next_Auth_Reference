@@ -2,8 +2,8 @@
 
 import { db } from "../db"
 import {v4 as uuidv4} from "uuid"
-import {Resend} from "resend"
 import { getUserByEmail } from "./user.actions"
+import { Resend } from "resend"
 export const getVerificationTokenByToken = async (token  : string) => {
 
     try {
@@ -59,8 +59,8 @@ export const generateVerificationToken = async (email : string ) => {
 }
 
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 
 export const sendVerificationEmail = async ({email , token} : {email : string , token : string}) => {
