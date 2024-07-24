@@ -1,3 +1,4 @@
+import { getTwoFactorConfirmationByUserId } from './lib/actions/twoFactorConfirmation.actions';
 import NextAuth, { type DefaultSession } from "next-auth"
 import authConfig from "./auth.config"
 import { db } from "./lib/db"
@@ -33,7 +34,20 @@ export const { auth, handlers , signIn, signOut } = NextAuth({
         const existingUser = await getUserById(user?.id!)
 
         if (!existingUser?.emailVerified) return false
-      
+
+        if (existingUser?.isTwoFactorEnabled) {
+          const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser?.id)
+            if (!twoFactorConfirmation) return false
+
+            await db.twoFactorConfirmation.delete({
+              where : {
+                id  : twoFactorConfirmation.id
+              }
+            })
+   
+        }
+
+
       return true;
     },
     async session({session, token}) {
