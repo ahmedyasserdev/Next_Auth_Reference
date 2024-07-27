@@ -26,6 +26,7 @@ const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email is already in use wit different provider"
@@ -42,7 +43,7 @@ const LoginForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values)
+      login({values , callbackUrl : callbackUrl as string })
         .then((data) => {
           if (data?.error) {
             form.reset();

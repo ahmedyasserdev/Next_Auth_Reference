@@ -10,11 +10,11 @@ import { useSearchParams } from "next/navigation";
 
  const Socials = () => {
     const searchParams = useSearchParams()
-    const callbackUrl = searchParams.get("callbackUrl")?.toString()
+    const callbackUrl = searchParams.get("callbackUrl")
 
     const onClick = (provider: "google" | "github") => {
         signIn(provider, {
-            callbackUrl: DEFAULT_LOGIN_REDIRECT
+            callbackUrl: callbackUrl ||  DEFAULT_LOGIN_REDIRECT
         })
     }
 

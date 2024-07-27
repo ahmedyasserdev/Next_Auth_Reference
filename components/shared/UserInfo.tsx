@@ -23,7 +23,8 @@ const UserInfo = ({ user, label }: UserInfoProps) => {
                   value !== undefined &&
                   value !== null &&
                   value !== "" &&
-                  key !== "image"
+                  key !== "image" &&
+                  key !== 'isOAuth'
               )
               .map(([key, value]) => (
                 <div

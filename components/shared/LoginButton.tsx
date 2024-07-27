@@ -6,9 +6,12 @@ type LoginButtonProps = {
   asChild?: boolean;
 };
 
+import {Dialog , DialogTrigger , DialogContent} from "@/components/ui/dialog"
+
 
 import { useRouter } from 'next/navigation';
 import React from 'react'
+import LoginForm from "./LoginForm";
 
 const LoginButton = ({
   children,
@@ -23,7 +26,14 @@ const LoginButton = ({
 
     if (mode === "modal") {
         return (
-            <span>TODO: implement modal</span>
+            <Dialog>
+              <DialogTrigger asChild >
+                {children}
+              </DialogTrigger>
+              <DialogContent className = "p-0 w-auto bg-transparent border-none" >
+                <LoginForm/>
+              </DialogContent>
+            </Dialog>
         )
     }
 
